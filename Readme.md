@@ -8,10 +8,10 @@ polymath [-h] poly1 poly2 op
 
 Do math with polynomials
 
-positional arguments:
-  poly1       First polynomial
-  poly2       Second polynomial
-  op          Operation, +, -, /, or *
+positional arguments:  
+  poly1       First polynomial  
+  poly2       Second polynomial  
+  op          Operation, +, -, /, or *  
 
 options:
   -h, --help  show this help message and exit
