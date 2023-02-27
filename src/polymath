@@ -1,0 +1,63 @@
+#!/bin/env python3
+
+import argparse
+import sympy
+import ast
+
+def get_variable_names(code_string):
+    """
+    Returns a list of variable names used in the given Python code string.
+    """
+    # Parse the code string into an AST
+    tree = ast.parse(code_string)
+
+    # Create a set to store the variable names
+    variable_names = set()
+
+    # Define a function to visit each node in the AST
+    def visit(node):
+        # Check if the node is a variable
+        if isinstance(node, ast.Name):
+            # Add the variable name to the set
+            variable_names.add(node.id)
+
+        # Recursively visit the node's children
+        for child in ast.iter_child_nodes(node):
+            visit(child)
+
+    # Visit the root node of the AST
+    visit(tree)
+
+    # return the set of variable names
+    return variable_names
+
+def main():
+    parser = argparse.ArgumentParser(description='Do math with polynomials')
+    parser.add_argument('poly1', help='First polynomial')
+    parser.add_argument('poly2', help='Second polynomial')
+    parser.add_argument('op', help="Operation, +, -, /, or *")
+    args = parser.parse_args()
+    vars = get_variable_names(args.poly1)
+    vars = get_variable_names(args.poly2).union(vars)
+    vars = sympy.symbols(list(vars))
+    poly1 = sympy.poly(args.poly1, vars, domain='QQ')
+    poly2 = sympy.poly(args.poly2, vars, domain='QQ')
+    match args.op:
+        case '+':
+            sum = poly1.add(poly2)
+            print(f"Sum: {sum.expr}")
+        case '-':
+            sub = poly1.sub(poly2)
+            print(f"Difference: {sub.expr}")
+        case '*':
+            mul = poly1.mul(poly2)
+            print(f"Product: {mul.expr}")
+        case '/':
+            quot, rem = poly1.div(poly2)
+            print(f"Quotient: {quot.expr}")
+            print(f"Remainder: {rem.expr}")
+        case _:
+            print("Invalid Operation")
+
+if __name__ == '__main__':
+    main()
