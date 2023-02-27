@@ -13,7 +13,7 @@ positional arguments:
   poly2       Second polynomial  
   op          Operation, +, -, /, or *  
 
-options:
+options:  
   -h, --help  show this help message and exit
 
 ```bash
